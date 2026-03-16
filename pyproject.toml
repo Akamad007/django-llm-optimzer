@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-llm-optimizer"
-version = "0.1.0"
+version = "0.1.1"
 description = "Machine-readable Django query profiling for LLMs, tests, and CI."
 readme = "README.md"
 requires-python = ">=3.11"
