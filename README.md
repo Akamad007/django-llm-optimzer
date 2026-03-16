@@ -1,6 +1,6 @@
-# django-llm-profiler
+# django-llm-optimizer
 
-`django-llm-profiler` is a Django-first profiling package that captures request and test query behavior, analyzes it for common performance issues, and emits structured diagnostics designed for LLMs, CI pipelines, and automated tooling.
+`django-llm-optimizer` is a Django-first profiling package that captures request and test query behavior, analyzes it for common performance issues, and emits structured diagnostics designed for LLMs, CI pipelines, and automated tooling.
 
 It is intentionally not a browser UI or standalone server. The package is meant to drop into an existing Django app, collect query traces using Django-native hooks, and export machine-readable results that agents or build systems can consume.
 
@@ -16,13 +16,13 @@ Django teams increasingly want automated feedback about ORM behavior during requ
 - Celery and Temporal background task profiling
 - JSON-first exports
 
-By default, traces are written as timestamped JSON reports under `.django_llm_profiler/`, which makes them easy for scripts, agents, and CI artifacts to consume directly.
+By default, traces are written as timestamped JSON reports under `.django_llm_optimizer/`, which makes them easy for scripts, agents, and CI artifacts to consume directly.
 
 ## How it differs from Django Silk
 
 Django Silk does a strong job of capturing requests and queries for human inspection through a UI.
 
-`django-llm-profiler` focuses on a different workflow:
+`django-llm-optimizer` focuses on a different workflow:
 
 - no UI
 - structured machine-readable diagnostics
@@ -30,12 +30,12 @@ Django Silk does a strong job of capturing requests and queries for human inspec
 - CI and test profiling helpers
 - lightweight library-style integration inside an existing Django app
 
-This is not a critique of Silk. The tools are aimed at different primary consumers: Silk is human-inspection first, while `django-llm-profiler` is automation-first.
+This is not a critique of Silk. The tools are aimed at different primary consumers: Silk is human-inspection first, while `django-llm-optimizer` is automation-first.
 
 ## Installation
 
 ```bash
-python -m pip install django-llm-profiler
+python -m pip install django-llm-optimizer
 ```
 
 For local development:
@@ -49,7 +49,7 @@ In `INSTALLED_APPS`:
 ```python
 INSTALLED_APPS = [
     # ...
-    "django_llm_profiler",
+    "django_llm_optimzer",
 ]
 ```
 
@@ -93,7 +93,7 @@ Minimal setup:
 ```python
 INSTALLED_APPS = [
     # ...
-    "django_llm_profiler",
+    "django_llm_optimzer",
 ]
 
 MIDDLEWARE = [

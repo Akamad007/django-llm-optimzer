@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from django_llm_profiler.exporters.json_exporter import build_trace_filename
-from django_llm_profiler.types import RequestTrace
+from django_llm_optimzer.exporters.json_exporter import build_trace_filename
+from django_llm_optimzer.types import RequestTrace
 
 
 def test_build_trace_filename_includes_timestamp_and_trace_metadata():

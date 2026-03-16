@@ -3,7 +3,7 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "django-llm-optimzer"
+name = "django-llm-optimizer"
 version = "0.1.0"
 description = "Machine-readable Django query profiling for LLMs, tests, and CI."
 readme = "README.md"
@@ -29,10 +29,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/akamad007/django-llm-optimzer"
-Repository = "https://github.com/akamad007/django-llm-optimzer"
-Issues = "https://github.com/akamad007/django-llm-optimzer/issues"
-PyPI = "https://pypi.org/project/django-llm-optimzer/"
+Homepage = "https://github.com/akamad007/django-llm-optimizer"
+Repository = "https://github.com/akamad007/django-llm-optimizer"
+Issues = "https://github.com/akamad007/django-llm-optimizer/issues"
+PyPI = "https://pypi.org/project/django-llm-optimizer/"
 
 [project.optional-dependencies]
 dev = [
@@ -42,7 +42,7 @@ dev = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["django_llm_optimizer*"]
+include = ["django_llm_optimzer*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

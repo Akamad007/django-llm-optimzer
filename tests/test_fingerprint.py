@@ -1,5 +1,5 @@
-from django_llm_profiler.utils.fingerprint import fingerprint_sql
-from django_llm_profiler.utils.sql import normalize_sql
+from django_llm_optimzer.utils.fingerprint import fingerprint_sql
+from django_llm_optimzer.utils.sql import normalize_sql
 
 
 def test_normalize_sql_collapses_literals_and_whitespace():

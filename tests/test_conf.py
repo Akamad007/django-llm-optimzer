@@ -1,6 +1,6 @@
 from django.test import override_settings
 
-from django_llm_profiler.conf import DEFAULTS, get_settings
+from django_llm_optimzer.conf import DEFAULTS, get_settings
 
 
 def test_default_settings_are_loaded():

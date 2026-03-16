@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
-from django_llm_profiler.analyzers.nplusone import detect_nplusone
-from django_llm_profiler.types import QueryEvent
+from django_llm_optimzer.analyzers.nplusone import detect_nplusone
+from django_llm_optimzer.types import QueryEvent
 
 
 def make_query(index: int) -> QueryEvent:

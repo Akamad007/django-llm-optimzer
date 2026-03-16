@@ -2,7 +2,7 @@ from pathlib import Path
 
 from django.db import connection
 
-from django_llm_profiler.api import export_trace, get_last_trace, profile_block
+from django_llm_optimzer.api import export_trace, get_last_trace, profile_block
 
 
 def test_profile_block_captures_queries(tmp_path: Path):
