@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import asyncio
 
-from django_llm_optimzer.api import get_last_trace
-from django_llm_optimzer.integrations.celery import profile_celery_task
-from django_llm_optimzer.integrations.temporal import profile_temporal_activity, profile_temporal_workflow
+from django_llm_optimizer.api import get_last_trace
+from django_llm_optimizer.integrations.celery import profile_celery_task
+from django_llm_optimizer.integrations.temporal import profile_temporal_activity, profile_temporal_workflow
 
 
 def test_profile_celery_task_decorator_creates_celery_trace():

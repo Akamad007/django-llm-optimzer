@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
-from django_llm_optimzer.analyzers.aggregate import aggregate_traces
-from django_llm_optimzer.types import QueryEvent, RequestTrace, TraceSummary
+from django_llm_optimizer.analyzers.aggregate import aggregate_traces
+from django_llm_optimizer.types import QueryEvent, RequestTrace, TraceSummary
 
 
 def make_trace(

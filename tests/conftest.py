@@ -13,7 +13,7 @@ def pytest_configure():
         INSTALLED_APPS=[
             "django.contrib.contenttypes",
             "django.contrib.auth",
-            "django_llm_optimzer",
+            "django_llm_optimizer",
         ],
         DATABASES={
             "default": {
@@ -27,7 +27,7 @@ def pytest_configure():
             "ENABLED": True,
             "CAPTURE_REQUESTS": True,
             "CAPTURE_TESTS": True,
-            "STORAGE_BACKEND": "django_llm_optimzer.storage.memory.MemoryStorage",
+            "STORAGE_BACKEND": "django_llm_optimizer.storage.memory.MemoryStorage",
         },
     )
     django.setup()
@@ -35,7 +35,7 @@ def pytest_configure():
 
 @pytest.fixture(autouse=True)
 def clear_memory_storage():
-    from django_llm_optimzer.storage.memory import MemoryStorage
+    from django_llm_optimizer.storage.memory import MemoryStorage
 
     MemoryStorage().clear()
     yield

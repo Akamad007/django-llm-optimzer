@@ -2,7 +2,7 @@
 __pycache__/
 *.pyc
 .venv/
-.django_llm_optimzer/
+.django_llm_optimizer/
 dist/
 build/
 *.egg-info/

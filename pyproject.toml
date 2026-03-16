@@ -29,9 +29,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/akamad007/django-llm-optimzer"
-Repository = "https://github.com/akamad007/django-llm-optimzer"
-Issues = "https://github.com/akamad007/django-llm-optimzer/issues"
+Homepage = "https://github.com/Akamad007/django-llm-optimizer"
+Repository = "https://github.com/Akamad007/django-llm-optimizer"
+Issues = "https://github.com/Akamad007/django-llm-optimizer/issues"
 PyPI = "https://pypi.org/project/django-llm-optimizer/"
 
 [project.optional-dependencies]
@@ -42,7 +42,7 @@ dev = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["django_llm_optimzer*"]
+include = ["django_llm_optimizer*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

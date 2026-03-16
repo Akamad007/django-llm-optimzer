@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
-from django_llm_optimzer.analyzers.duplicates import group_exact_duplicates, group_normalized_duplicates
-from django_llm_optimzer.types import QueryEvent
+from django_llm_optimizer.analyzers.duplicates import group_exact_duplicates, group_normalized_duplicates
+from django_llm_optimizer.types import QueryEvent
 
 
 def make_query(sql: str, normalized_sql: str | None = None) -> QueryEvent:

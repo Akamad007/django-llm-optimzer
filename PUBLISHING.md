@@ -17,7 +17,7 @@ Publishing runs from:
 On PyPI, configure a Trusted Publisher that matches this repository exactly:
 
 - GitHub owner: `akamad007`
-- Repository: `django-llm-optimzer`
+- Repository: `django-llm-optimizer`
 - Workflow file: `.github/workflows/python-publish.yml`
 - Environment: `pypi`
 

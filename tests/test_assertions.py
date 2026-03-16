@@ -1,8 +1,8 @@
 import pytest
 from django.db import connection
 
-from django_llm_optimzer.api import get_last_trace, profile_block
-from django_llm_optimzer.testing.assertions import assert_max_queries
+from django_llm_optimizer.api import get_last_trace, profile_block
+from django_llm_optimizer.testing.assertions import assert_max_queries
 
 
 def test_assert_max_queries_passes():
