@@ -20,8 +20,9 @@ DEFAULTS: dict[str, Any] = {
     "SLOW_QUERY_MS": 100.0,
     "DUPLICATE_QUERY_MIN_REPETITIONS": 3,
     "NPLUSONE_MIN_REPETITIONS": 5,
-    "STORAGE_BACKEND": "django_llm_profiler.storage.memory.MemoryStorage",
-    "EXPORT_JSON_PATH": ".django-llm-profiler",
+    "STORAGE_BACKEND": "django_llm_profiler.storage.file.FileStorage",
+    "REPORTS_PATH": ".django_llm_profiler",
+    "EXPORT_JSON_PATH": ".django_llm_profiler",
     "IGNORE_PATH_PREFIXES": [],
     "INCLUDE_PATH_PREFIXES": [],
 }
@@ -39,18 +40,26 @@ class ProfilerSettings:
     duplicate_query_min_repetitions: int
     nplusone_min_repetitions: int
     storage_backend: str
+    reports_path: str
     export_json_path: str
     ignore_path_prefixes: list[str]
     include_path_prefixes: list[str]
 
     @property
+    def reports_directory(self) -> Path:
+        return Path(self.reports_path)
+
+    @property
     def export_directory(self) -> Path:
-        return Path(self.export_json_path)
+        return self.reports_directory
 
 
 def get_config() -> dict[str, Any]:
     configured = getattr(settings, "DJANGO_LLM_PROFILER", {})
     merged = {**DEFAULTS, **configured}
+    if "REPORTS_PATH" not in configured and "EXPORT_JSON_PATH" in configured:
+        merged["REPORTS_PATH"] = configured["EXPORT_JSON_PATH"]
+    merged["EXPORT_JSON_PATH"] = merged["REPORTS_PATH"]
     merged["IGNORE_PATH_PREFIXES"] = list(merged["IGNORE_PATH_PREFIXES"])
     merged["INCLUDE_PATH_PREFIXES"] = list(merged["INCLUDE_PATH_PREFIXES"])
     return merged
@@ -69,6 +78,7 @@ def get_settings() -> ProfilerSettings:
         duplicate_query_min_repetitions=int(config["DUPLICATE_QUERY_MIN_REPETITIONS"]),
         nplusone_min_repetitions=int(config["NPLUSONE_MIN_REPETITIONS"]),
         storage_backend=str(config["STORAGE_BACKEND"]),
+        reports_path=str(config["REPORTS_PATH"]),
         export_json_path=str(config["EXPORT_JSON_PATH"]),
         ignore_path_prefixes=list(config["IGNORE_PATH_PREFIXES"]),
         include_path_prefixes=list(config["INCLUDE_PATH_PREFIXES"]),

@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 
 from django_llm_profiler.conf import get_settings
-from django_llm_profiler.exporters.json_exporter import export_trace_json
+from django_llm_profiler.exporters.json_exporter import build_trace_filename, export_trace_json
 from django_llm_profiler.storage.base import BaseStorage
 from django_llm_profiler.types import RequestTrace
 
@@ -16,7 +16,7 @@ class FileStorage(BaseStorage):
         self.base_path = get_settings().export_directory
 
     def save_trace(self, trace: RequestTrace) -> None:
-        filename = f"{trace.trace_type}-{trace.trace_id}.json"
+        filename = build_trace_filename(trace)
         export_trace_json(trace, self.base_path / filename)
 
     def list_traces(self) -> list[RequestTrace]:

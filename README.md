@@ -15,6 +15,8 @@ Django teams increasingly want automated feedback about ORM behavior during requ
 - test and CI usage
 - JSON-first exports
 
+By default, traces are written as timestamped JSON reports under `.django_llm_profiler/`, which makes them easy for scripts, agents, and CI artifacts to consume directly.
+
 ## How it differs from Django Silk
 
 Django Silk does a strong job of capturing requests and queries for human inspection through a UI.
@@ -68,12 +70,14 @@ DJANGO_LLM_PROFILER = {
     "SLOW_QUERY_MS": 100.0,
     "DUPLICATE_QUERY_MIN_REPETITIONS": 3,
     "NPLUSONE_MIN_REPETITIONS": 5,
-    "STORAGE_BACKEND": "django_llm_profiler.storage.memory.MemoryStorage",
-    "EXPORT_JSON_PATH": ".django-llm-profiler",
+    "STORAGE_BACKEND": "django_llm_profiler.storage.file.FileStorage",
+    "REPORTS_PATH": ".django_llm_profiler",
     "IGNORE_PATH_PREFIXES": [],
     "INCLUDE_PATH_PREFIXES": [],
 }
 ```
+
+`REPORTS_PATH` controls where timestamped JSON reports are written. `EXPORT_JSON_PATH` is still accepted as a legacy alias.
 
 ## Usage
 
@@ -159,6 +163,12 @@ Each trace includes:
 - heuristic issues and suggestions
 
 The JSON output is designed to be stable enough for automated post-processing rather than optimized for visual browsing.
+
+Default report filenames look like:
+
+```text
+.django_llm_profiler/20260315T184512123456Z-request-abc123def456.json
+```
 
 ## Current limitations
 

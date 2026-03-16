@@ -9,7 +9,6 @@ from django.http import HttpRequest, HttpResponse
 from django_llm_profiler.collectors.context import ProfileContext
 from django_llm_profiler.collectors.requests import update_trace_request_metadata
 from django_llm_profiler.conf import get_settings
-from django_llm_profiler.exporters.json_exporter import export_trace_json
 
 
 class QueryProfilingMiddleware:
@@ -26,6 +25,4 @@ class QueryProfilingMiddleware:
         with ProfileContext(trace_type="request") as trace:
             response = self.get_response(request)
             update_trace_request_metadata(trace, request, response)
-        if settings.export_json_path:
-            export_trace_json(trace, settings.export_directory / f"request-{trace.trace_id}.json")
         return response

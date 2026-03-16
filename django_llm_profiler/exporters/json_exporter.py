@@ -3,9 +3,15 @@
 from __future__ import annotations
 
 import json
+from datetime import timezone
 from pathlib import Path
 
 from django_llm_profiler.types import RequestTrace
+
+
+def build_trace_filename(trace: RequestTrace) -> str:
+    timestamp = trace.started_at.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    return f"{timestamp}-{trace.trace_type}-{trace.trace_id}.json"
 
 
 def export_trace_json(trace: RequestTrace, path: str | Path) -> Path:
