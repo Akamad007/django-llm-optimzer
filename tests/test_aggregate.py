@@ -56,3 +56,15 @@ def test_aggregate_traces_reports_slowest_endpoints_and_queries():
     assert report["slowest_endpoints"][0]["avg_duration_ms"] == 225.0
     assert report["slowest_queries"][0]["fingerprint"] == "widgets-lookup"
     assert report["slowest_queries"][0]["count"] == 3
+
+
+def test_aggregate_traces_reports_background_operations():
+    trace = make_trace("trace-task", "/ignored/", query_duration_ms=20.0, total_db_time_ms=25.0, request_duration_ms=120.0)
+    trace.trace_type = "celery_task"
+    trace.metadata = {"task_name": "sync_users"}
+
+    report = aggregate_traces([trace], limit=5)
+
+    assert report["background_trace_count"] == 1
+    assert report["slowest_background_operations"][0]["trace_type"] == "celery_task"
+    assert report["slowest_background_operations"][0]["name"] == "sync_users"

@@ -6,6 +6,8 @@ from django_llm_profiler.conf import DEFAULTS, get_settings
 def test_default_settings_are_loaded():
     profiler_settings = get_settings()
     assert profiler_settings.enabled is True
+    assert profiler_settings.capture_celery is True
+    assert profiler_settings.capture_temporal is True
     assert profiler_settings.max_stack_frames == DEFAULTS["MAX_STACK_FRAMES"]
     assert str(profiler_settings.reports_directory) == DEFAULTS["REPORTS_PATH"]
 

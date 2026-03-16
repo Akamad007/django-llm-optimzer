@@ -28,6 +28,12 @@ dependencies = [
   "Django>=4.2",
 ]
 
+[project.urls]
+Homepage = "https://github.com/akamad007/django-llm-optimzer"
+Repository = "https://github.com/akamad007/django-llm-optimzer"
+Issues = "https://github.com/akamad007/django-llm-optimzer/issues"
+PyPI = "https://pypi.org/project/django-llm-profiler/"
+
 [project.optional-dependencies]
 dev = [
   "pytest>=8.0",

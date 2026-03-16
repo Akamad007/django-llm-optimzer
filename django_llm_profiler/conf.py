@@ -14,6 +14,8 @@ DEFAULTS: dict[str, Any] = {
     "ENABLED": True,
     "CAPTURE_REQUESTS": True,
     "CAPTURE_TESTS": True,
+    "CAPTURE_CELERY": True,
+    "CAPTURE_TEMPORAL": True,
     "INCLUDE_STACKTRACE": True,
     "MAX_STACK_FRAMES": 12,
     "REDACT_SQL_PARAMS": True,
@@ -33,6 +35,8 @@ class ProfilerSettings:
     enabled: bool
     capture_requests: bool
     capture_tests: bool
+    capture_celery: bool
+    capture_temporal: bool
     include_stacktrace: bool
     max_stack_frames: int
     redact_sql_params: bool
@@ -71,6 +75,8 @@ def get_settings() -> ProfilerSettings:
         enabled=bool(config["ENABLED"]),
         capture_requests=bool(config["CAPTURE_REQUESTS"]),
         capture_tests=bool(config["CAPTURE_TESTS"]),
+        capture_celery=bool(config["CAPTURE_CELERY"]),
+        capture_temporal=bool(config["CAPTURE_TEMPORAL"]),
         include_stacktrace=bool(config["INCLUDE_STACKTRACE"]),
         max_stack_frames=int(config["MAX_STACK_FRAMES"]),
         redact_sql_params=bool(config["REDACT_SQL_PARAMS"]),

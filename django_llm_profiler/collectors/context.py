@@ -15,6 +15,7 @@ from django_llm_profiler.types import JSONValue, QueryEvent, RequestTrace
 
 _active_trace: ContextVar[RequestTrace | None] = ContextVar("django_llm_profiler_active_trace", default=None)
 _last_trace: ContextVar[RequestTrace | None] = ContextVar("django_llm_profiler_last_trace", default=None)
+_last_completed_trace: RequestTrace | None = None
 
 
 def get_active_trace() -> RequestTrace | None:
@@ -22,7 +23,16 @@ def get_active_trace() -> RequestTrace | None:
 
 
 def get_last_trace() -> RequestTrace | None:
-    return _last_trace.get()
+    trace = _last_trace.get() or _last_completed_trace
+    traces = get_storage().list_traces()
+    latest_stored = traces[-1] if traces else None
+    if trace is None:
+        return latest_stored
+    if latest_stored is None:
+        return trace
+    trace_timestamp = trace.ended_at or trace.started_at
+    stored_timestamp = latest_stored.ended_at or latest_stored.started_at
+    return latest_stored if stored_timestamp >= trace_timestamp else trace
 
 
 class ProfileContext:
@@ -53,6 +63,8 @@ class ProfileContext:
         return self.trace
 
     def __exit__(self, exc_type, exc, tb) -> None:
+        global _last_completed_trace
+
         settings = get_settings()
         self.trace.ended_at = datetime.now(timezone.utc)
         self._exit_stack.close()
@@ -62,6 +74,7 @@ class ProfileContext:
             self.trace.summary = summarize_trace(self.trace)
             get_storage().save_trace(self.trace)
             _last_trace.set(self.trace)
+            _last_completed_trace = self.trace
 
 
 def record_query(event: QueryEvent) -> None:

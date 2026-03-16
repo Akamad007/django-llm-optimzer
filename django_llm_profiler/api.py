@@ -18,6 +18,15 @@ def profile_block(name: str | None = None, metadata: dict[str, JSONValue] | None
     return ProfileContext(name=name, metadata=metadata, trace_type="block")
 
 
+def profile_task(
+    name: str | None = None,
+    metadata: dict[str, JSONValue] | None = None,
+    trace_type: str = "task",
+) -> ProfileContext:
+    """Return a context manager that profiles a background task or workflow."""
+    return ProfileContext(name=name, metadata=metadata, trace_type=trace_type)
+
+
 def get_last_trace() -> RequestTrace | None:
     """Return the most recent completed trace in the current context."""
     return get_last_profiled_trace()

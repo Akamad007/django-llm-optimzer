@@ -13,6 +13,7 @@ Django teams increasingly want automated feedback about ORM behavior during requ
 - likely N+1 detection
 - heuristic optimization suggestions
 - test and CI usage
+- Celery and Temporal background task profiling
 - JSON-first exports
 
 By default, traces are written as timestamped JSON reports under `.django_llm_profiler/`, which makes them easy for scripts, agents, and CI artifacts to consume directly.
@@ -70,6 +71,8 @@ DJANGO_LLM_PROFILER = {
     "ENABLED": True,
     "CAPTURE_REQUESTS": True,
     "CAPTURE_TESTS": True,
+    "CAPTURE_CELERY": True,
+    "CAPTURE_TEMPORAL": True,
     "INCLUDE_STACKTRACE": True,
     "MAX_STACK_FRAMES": 12,
     "REDACT_SQL_PARAMS": True,
@@ -104,6 +107,8 @@ DJANGO_LLM_PROFILER = {
 ```
 
 With that setup, request traces are captured automatically and written to `.django_llm_profiler/` by default.
+
+Celery task capture is automatic when Celery is installed and `CAPTURE_CELERY=True`. Temporal capture is explicit via decorators because Temporal execution is typically defined in application code rather than Django middleware.
 
 ## Usage
 
@@ -168,6 +173,47 @@ def test_widget_detail(client):
 
 `@profile_test` stores the resulting trace on `test_widget_list.last_trace`, and `@assert_max_queries(...)` raises a helpful assertion if the budget is exceeded.
 
+## Celery and Temporal
+
+Celery tasks:
+
+```python
+from celery import shared_task
+
+@shared_task
+def sync_users():
+    ...
+```
+
+If Celery is installed and `CAPTURE_CELERY=True`, django-llm-profiler hooks Celery task execution automatically via signals.
+
+You can also decorate tasks explicitly:
+
+```python
+from django_llm_profiler.integrations import profile_celery_task
+
+@profile_celery_task
+def sync_users():
+    ...
+```
+
+Temporal activities and workflows:
+
+```python
+from django_llm_profiler.integrations import (
+    profile_temporal_activity,
+    profile_temporal_workflow,
+)
+
+@profile_temporal_activity
+async def fetch_customer(customer_id: str):
+    ...
+
+@profile_temporal_workflow
+async def customer_sync_workflow(customer_id: str):
+    ...
+```
+
 ## Management commands
 
 Summarize traces:
@@ -191,6 +237,30 @@ This repository includes GitHub Actions workflows for:
 - PyPI publishing on release
 
 The CI workflow runs Ruff and pytest. The publish workflow builds distributions and uploads them to PyPI.
+
+## Publishing
+
+PyPI publishing is handled by [python-publish.yml](.github/workflows/python-publish.yml) using PyPI Trusted Publishing with GitHub OIDC.
+
+- No PyPI API token is used.
+- Only the publish job gets `id-token: write`; the build job keeps minimal read-only permissions.
+- Publishing is triggered when a GitHub Release is published.
+- Manual dispatch is also available from GitHub Actions.
+- PyPI must be configured with a Trusted Publisher that exactly matches:
+  - GitHub owner: `akamad007`
+  - repository name: `django-llm-optimzer`
+  - workflow file path: `.github/workflows/python-publish.yml`
+  - environment name: `pypi`
+
+Maintainer note:
+
+- Create a GitHub Release to trigger publish.
+- The workflow file path configured on PyPI must match exactly.
+- Reusable GitHub workflows cannot currently be used as the trusted workflow for PyPI Trusted Publishing.
+- Environment mismatch can cause publish failures.
+- Stale package names or old PyPI URLs can also cause confusion; this project publishes as `django-llm-profiler` at `https://pypi.org/project/django-llm-profiler/`.
+
+See [PUBLISHING.md](PUBLISHING.md) for the maintainer checklist.
 
 ## Output shape
 
@@ -224,11 +294,13 @@ report = get_performance_report(limit=10)
 The aggregate report includes:
 
 - `slowest_endpoints`
+- `slowest_background_operations`
 - `slowest_queries`
 - per-endpoint average and max request duration
 - per-endpoint average and max DB time
 - per-query cumulative and max duration
 - paths and callsites associated with slow query fingerprints
+- per-task/workflow average and max duration
 
 ## Current limitations
 
